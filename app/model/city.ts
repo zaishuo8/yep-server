@@ -10,6 +10,7 @@ export interface City {
   id: number;
   name: string;
   img: string;
+  cityCode: string;
   createdAt: Date;
   updatedAt: Date;
 }

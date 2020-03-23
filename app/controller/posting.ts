@@ -1,5 +1,4 @@
 import { Controller } from 'egg';
-import { MediaType } from '../types/media';
 
 export default class PostingController extends Controller {
 
@@ -12,6 +11,7 @@ export default class PostingController extends Controller {
    *   cityCode?: number,
    *   longitude?: number,
    *   latitude?: number,
+   *   address?: string
    * }
    * return: boolean
    * */
@@ -23,13 +23,23 @@ export default class PostingController extends Controller {
         type: 'array',
         itemType: 'object',
         rule: {
-          type: MediaType,
-          url: 'string',
+          type: { type: 'enum', values: [ '1', '2' ] },
+          url: { type: 'string' },
         },
       },
+      content: { type: 'string' },
+      communityId: { type: 'number' },
+      cityCode: { type: 'string', required: false },
+      longitude: { type: 'number', required: false },
+      latitude: { type: 'number', required: false },
+      address: { type: 'string', required: false },
     });
 
-    return null;
+    const { medias, content, communityId, cityCode, longitude, latitude, address } = ctx.request.body;
+
+    await ctx.service.posting.createPosting(medias, content, communityId, cityCode, longitude, latitude, address);
+
+    ctx.body = true;
   }
 
   /**
@@ -65,7 +75,18 @@ export default class PostingController extends Controller {
    * }
    * */
   public async getPostings() {
-    return null;
+    const { ctx } = this;
+
+    // query 是 string 的，number 校验不能通过
+    ctx.validate({
+      pageNo: { type: 'string' },
+      pageSize: { type: 'string' },
+      communityId: { type: 'string', required: false },
+    }, ctx.query);
+
+    const { pageNo, pageSize, communityId } = ctx.query;
+
+    ctx.body = await ctx.service.posting.getPostings(parseInt(pageNo), parseInt(pageSize), parseInt(communityId));
   }
 
   /**
@@ -78,7 +99,20 @@ export default class PostingController extends Controller {
    * }
    * */
   public async submitComment() {
-    return null;
+    const { ctx } = this;
+
+    ctx.validate({
+      type: { type: 'enum', values: [ '1', '2' ] },
+      postingId: { type: 'number' },
+      commentId: { type: 'number', required: false },
+      content: { type: 'string' },
+    });
+
+    const { type, postingId, content, commentId } = ctx.request.body;
+
+    await ctx.service.posting.submitComment(type, postingId, content, commentId);
+
+    ctx.body = true;
   }
 
   /**

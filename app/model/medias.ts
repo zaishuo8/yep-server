@@ -6,24 +6,29 @@ import { Application } from 'egg';
 
 const { INTEGER, DATE, ENUM, STRING } = DataTypes;
 
-enum MediasType {
+export interface Media {
+  type: MediasType;
+  url: string;
+}
+
+export enum MediasType {
   Image = '1', // 图片
   Video = '2', // 视频
 }
 
-enum MediasHost {
+export enum MediasHost {
   Posting = '1', // 帖子
   Activity = '2', // 活动
 }
 
 export interface Medias {
-  id: number;
+  id?: number;
   type: MediasType;
   host: MediasHost;
   hostId: number;
   url: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 module.exports = (app: Application) => {

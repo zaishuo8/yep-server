@@ -6,7 +6,7 @@ import { Application } from 'egg';
 
 const { TEXT, INTEGER, DATE, ENUM } = DataTypes;
 
-enum CommentType {
+export enum CommentType {
   Comment = '1', // 评论
   Reply = '2', // 回复
 }
@@ -16,7 +16,7 @@ export interface Comment {
   userId: number;
   type: CommentType;
   postingId: number;
-  communityId: number;
+  commentId: number;
   content: string;
   createdAt: Date;
   updatedAt: Date;
@@ -37,7 +37,7 @@ module.exports = (app: Application) => {
     postingId: {
       type: INTEGER,
     },
-    communityId: {
+    commentId: {
       type: INTEGER,
     },
     content: {

@@ -25,6 +25,8 @@ module.exports = () => {
       };
     } catch (e) {
 
+      console.error(e);
+
       if (e.code === 'invalid_param') {
         // validate 统一的错误返回
         ctx.body = paramsCheckError;

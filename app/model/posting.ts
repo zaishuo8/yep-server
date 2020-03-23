@@ -7,12 +7,16 @@ import { Application } from 'egg';
 const { INTEGER, DATE, TEXT, DECIMAL } = DataTypes;
 
 export interface Posting {
-  id: number;
+  id?: number;
   userId: number;
   communityId: number;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  longitude?: number;
+  latitude?: number;
+  address?: string;
+  cityId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 module.exports = (app: Application) => {
@@ -20,6 +24,7 @@ module.exports = (app: Application) => {
     id: {
       primaryKey: true,
       type: INTEGER,
+      autoIncrement: true,
     },
     userId: {
       type: INTEGER,
