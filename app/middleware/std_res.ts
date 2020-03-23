@@ -11,6 +11,8 @@
  *   result: null,
  * }
  * */
+import { paramsCheckError } from '../dto/custom_error';
+
 module.exports = () => {
   return async function stdRes(ctx, next) {
     try {
@@ -22,11 +24,17 @@ module.exports = () => {
         result,
       };
     } catch (e) {
-      ctx.body = {
-        code: e.code || '-10000',
-        message: e.message || '未知错误',
-        result: null,
-      };
+
+      if (e.code === 'invalid_param') {
+        // validate 统一的错误返回
+        ctx.body = paramsCheckError;
+      } else {
+        ctx.body = {
+          code: e.code || '-10000',
+          message: e.message || '未知错误',
+          result: null,
+        };
+      }
     }
   };
 };

@@ -7,11 +7,11 @@ import { Application } from 'egg';
 const { INTEGER, DATE } = DataTypes;
 
 export interface CommunityUser {
-  id: number;
+  id?: number;
   communityId: number;
   userId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 module.exports = (app: Application) => {

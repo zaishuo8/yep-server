@@ -16,3 +16,8 @@ export const smsCodeError: CustomError = {
   code: '-10020',
   message: '验证码错误',
 };
+
+export const paramsCheckError: CustomError = {
+  code: '-10422',
+  message: '参数校验错误',
+};

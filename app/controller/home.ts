@@ -6,13 +6,10 @@ export default class HomeController extends Controller {
     ctx.body = await ctx.model.Community.findAll();
   }
 
+  /*
   public async insertCommunity() {
     const { ctx } = this;
     const { name, desc, img } = ctx.request.body;
     ctx.body = ctx.model.Community.create({ name, desc, img });
-  }
-
-  public async test() {
-    this.ctx.body = true;
-  }
+  }*/
 }

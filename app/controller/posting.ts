@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import { MediaType } from '../types/media';
 
 export default class PostingController extends Controller {
 
@@ -8,13 +9,26 @@ export default class PostingController extends Controller {
    *   medias: {type: 1照片/2视频, url: string}[],
    *   content: string,
    *   communityId: number,
-   *   cityCode: number,
-   *   longitude: number,
-   *   latitude: number,
+   *   cityCode?: number,
+   *   longitude?: number,
+   *   latitude?: number,
    * }
    * return: boolean
    * */
   public async submitPosting() {
+    const { ctx } = this;
+
+    ctx.validate({
+      medias: {
+        type: 'array',
+        itemType: 'object',
+        rule: {
+          type: MediaType,
+          url: 'string',
+        },
+      },
+    });
+
     return null;
   }
 

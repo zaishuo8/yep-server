@@ -8,17 +8,35 @@ export default class UserController extends Controller {
    * return: boolean
    * */
   public async smsCode() {
-    return null;
+    const { ctx } = this;
+    ctx.validate({
+      phoneNumber: { type: 'isPhoneNumber' },
+    });
+
+    ctx.body = true;
   }
 
   /**
    * 登录，未注册的直接注册
    * post
    * body: {phoneNumber: string, smsCode: string}
-   * return: { result: boolean, withRegister: boolean(是否是注册的) }
+   * return: {
+   *   result: boolean,
+   *   userInfo: {User},
+   *   token: string,
+   *   withRegister: boolean(是否是注册的),
+   * }
    * */
   public async login() {
-    return null;
+    const { ctx } = this;
+
+    ctx.validate({
+      phoneNumber: { type: 'isPhoneNumber' },
+      smsCode: { type: 'string' },
+    });
+
+    const { phoneNumber, smsCode } = ctx.request.body;
+    ctx.body = await ctx.service.user.login(phoneNumber, smsCode);
   }
 
   /**
@@ -28,7 +46,19 @@ export default class UserController extends Controller {
    * return: boolean
    * */
   public async selectCityCommunity() {
-    return null;
+    const { ctx } = this;
+
+    ctx.validate({
+      relation: { type: 'boolean' },
+      cityIds: { type: 'array', itemType: 'number', required: false },
+      communityIds: { type: 'array', itemType: 'number', required: false },
+    });
+
+    const { relation, cityIds, communityIds } = ctx.request.body;
+
+    await ctx.service.user.selectCityCommunity(relation, cityIds, communityIds);
+
+    ctx.body = true;
   }
 
   /**
