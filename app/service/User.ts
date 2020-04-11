@@ -101,4 +101,11 @@ export default class UserService extends Service {
 
     }
   }
+
+  /**
+   * 获取用户信息
+   * */
+  public async getUserInfo(id: number) {
+    return await this.ctx.model.User.findByPk(id, { raw: true });
+  }
 }

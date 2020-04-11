@@ -12,6 +12,7 @@ export default (app: Application) => {
 
   router.post('/user/sms_code', controller.user.smsCode);
   router.post('/user/login', controller.user.login);
+  router.get('/user', controller.user.getCurrentUserInfo);
 
   router.post('/user/cities_communities', controller.user.selectCityCommunity);
 
@@ -19,4 +20,5 @@ export default (app: Application) => {
   router.get('/posting', controller.posting.getPostings);
   router.post('/posting/comment', controller.posting.submitComment);
   router.get('/posting/comment', controller.posting.getComments);
+  router.get('/posting/one', controller.posting.getOnePosting);
 };

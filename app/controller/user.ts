@@ -69,4 +69,15 @@ export default class UserController extends Controller {
   public async follow() {
     return null;
   }
+
+  /**
+   * 获取当前用户信息
+   * get
+   * return userInfo
+   * */
+  public async getCurrentUserInfo() {
+    const { ctx } = this;
+    const userId = ctx.headers['x-application-user-id'];
+    ctx.body = await ctx.service.user.getUserInfo(userId);
+  }
 }

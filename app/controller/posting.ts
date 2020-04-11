@@ -27,7 +27,7 @@ export default class PostingController extends Controller {
           url: { type: 'string' },
         },
       },
-      content: { type: 'string' },
+      content: { type: 'string', required: false },
       communityId: { type: 'number' },
       cityCode: { type: 'string', required: false },
       longitude: { type: 'number', required: false },
@@ -87,6 +87,25 @@ export default class PostingController extends Controller {
     const { pageNo, pageSize, communityId } = ctx.query;
 
     ctx.body = await ctx.service.posting.getPostings(parseInt(pageNo), parseInt(pageSize), parseInt(communityId));
+  }
+
+  /**
+   * 获取单个帖子
+   * get
+   * query: {id: number}
+   * return: Posting
+   * */
+  public async getOnePosting() {
+    const { ctx } = this;
+
+    // query 是 string 的，number 校验不能通过
+    ctx.validate({
+      postingId: { type: 'string' },
+    }, ctx.query);
+
+    const { postingId } = ctx.query;
+
+    ctx.body = await ctx.service.posting.getOnePosting(parseInt(postingId));
   }
 
   /**
