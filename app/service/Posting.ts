@@ -289,7 +289,7 @@ export default class PostingService extends Service {
       raw: true,
     });
     // 图片
-    posting.medias = await this.ctx.model.Medias.findAll({
+    const mediasResult = await this.ctx.model.Medias.findAll({
       attributes: [ 'type', 'url', 'hostId' ],
       where: {
         host: '1',
@@ -297,6 +297,10 @@ export default class PostingService extends Service {
       },
       raw: true,
     });
+    if (mediasResult && mediasResult.length > 0) {
+      mediasResult.forEach(media => (media.url = `${this.ctx.app.config.oss.host}${media.url}`));
+    }
+    posting.medias = mediasResult;
     // 圈子
     posting.communityInfo = await this.ctx.model.Community.findByPk(communityId, {
       attributes: [ 'id', 'name' ],
