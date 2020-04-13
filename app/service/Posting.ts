@@ -330,4 +330,28 @@ export default class PostingService extends Service {
     posting.hotComments = hotComments;
     return posting;
   }
+
+  /**
+   * 点赞、取消
+   * */
+  public async submitThumb(type: string, postingId: number, commentId?: number) {
+    const userId = this.ctx.headers['x-application-user-id'];
+    try {
+      await this.ctx.model.Thumb.create({
+        userId, type, postingId, commentId,
+      });
+    } catch (e) {
+      if (e.name === 'SequelizeUniqueConstraintError') {
+        // 唯一索引错误，表示已存在，取消点赞
+        await this.ctx.model.Thumb.destroy({
+          where: {
+            userId, type, postingId,
+            commentId: commentId || null,
+          },
+        });
+      } else {
+        throw e;
+      }
+    }
+  }
 }

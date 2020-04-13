@@ -173,10 +173,22 @@ export default class PostingController extends Controller {
   /**
    * 点赞/取消
    * post
-   * body: {type: 1|2, postingId: number, commentId: number}
+   * body: {type: '1'|'2', postingId: number, commentId: number}
    * return: boolean
    * */
   public async submitThumb() {
-    return null;
+    const { ctx } = this;
+
+    ctx.validate({
+      type: { type: 'enum', values: [ '1', '2' ] },
+      postingId: { type: 'number' },
+      commentId: { type: 'number', required: false },
+    });
+
+    const { type, postingId, commentId } = ctx.request.body;
+
+    await ctx.service.posting.submitThumb(type, postingId, commentId);
+
+    ctx.body = true;
   }
 }

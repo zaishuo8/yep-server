@@ -21,4 +21,5 @@ export default (app: Application) => {
   router.post('/posting/comment', controller.posting.submitComment);
   router.get('/posting/comment', controller.posting.getComments);
   router.get('/posting/one', controller.posting.getOnePosting);
+  router.post('/posting/thumb', controller.posting.submitThumb);
 };
